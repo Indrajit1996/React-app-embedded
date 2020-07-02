@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Codify Indi</title>
+  <script type="application/javascript" src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
+  <script type="application/javascript" src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
+  <script type="application/javascript" src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+  <div id="root"></div>
+
+<script type="text/babel">
+// Obtain the root 
+   
+    const rootElement = document.getElementById('root')
+    // Create a ES6 class component    
+    class Widget extends React.Component { 
+    // Use the render function to return JSX component  
+      constructor(props){
+        super(props);
+        this.state = {
+          data: []
+        }
+      }
+      componentDidMount(){
+        // Call the API while rendering the DOM.
+        if(this.state.data == ''){
+          let url  = 'https://codifyinditest.com/script_test/api-test/';
+          fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data) // Prints result from `response.json()` in getRequest
+            this.setState({
+              data: data
+            })
+          })
+          .catch(error => console.error(error))
+        }
+      }
+        
+    render() { 
+        let {data} = this.state;
+        data = data ? data['script test'] : [];
+
+        return (
+        <div className="shopping-list">
+          { 
+          data ?  
+          <div className="card customizable" style={{position: 'absolute', right: '40px', bottom: '40px', width: '13rem', background: '#000000', borderRadius: '6px' }} onClick={() => {console.log("here")}}>
+            <div className="card-body" >
+              <h5 className="card-title" style={{textAlign: 'center', color: 'white'}}>{data.labels}</h5>
+              <h6 className="card-subtitle mb-2" style={{background: '#001a09', borderRadius: '25px'}} >
+                  <span className="box-green" style={{color: '#33cc33'}}>
+                    <img src="./call-icon.png" style={{width: '32px', padding: '5px 5px 5px 0px'}} />
+                      {data.phone_number}
+                  </span>
+              </h6>
+            </div>
+          </div> : 
+          <div className="d-flex justify-content-center ">
+            <div className="spinner-border fast" style={{width: '3rem', height: '3rem'}} role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div> 
+        }
+        </div>
+      );
+      } 
+    }
+// Create a function to wrap up your component
+function App(){
+  return(
+  <div>
+    <Widget />
+  </div>
+  )
+}
+
+
+// Use the ReactDOM.render to show your component on the browser
+    ReactDOM.render(
+      <App />,
+      rootElement
+    )
+</script>
+
+</body>
+
+</html>
